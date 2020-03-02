@@ -1,3 +1,5 @@
+const fs = require("fs");
+
 var Chess = require('./chess').Chess;
 var chess = new Chess();
 console.log(chess.get('a2'));
@@ -96,6 +98,14 @@ function nextmove() {
   console.log("took " + ((d.getTime() - last) / 1000) + " seconds to move");
   if (chess.game_over()) {
     console.log("game over");
+
+    fs.writeFile("/chess_output.txt", chess.history({ verbose: true }), function(err) {
+      if(err) {
+        return console.log(err);
+      }
+      console.log("The file was saved!");
+    });
+
     return;
   }
   if (number_runs > 0) {
